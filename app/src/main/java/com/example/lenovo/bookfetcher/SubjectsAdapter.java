@@ -1,6 +1,5 @@
 package com.example.lenovo.bookfetcher;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +43,7 @@ public class SubjectsAdapter extends BaseAdapter  {
         String description = subject.description;
 
 
-        View view = LayoutInflater.from(mainActivity).inflate(R.layout.book_list, null);
+        View view = LayoutInflater.from(mainActivity).inflate(R.layout.subject_list, null);
 
         TextView titleTextView = (TextView) view.findViewById(R.id.titleTextView);
         TextView descrTextView = (TextView) view.findViewById(R.id.descriptionTextView);
@@ -52,14 +51,7 @@ public class SubjectsAdapter extends BaseAdapter  {
 
        titleTextView.setText(title);
         descrTextView.setText(description);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-              Intent i= new Intent(mainActivity,Book.class);
-              mainActivity.startActivity(i);
 
-            }
-        });
 
         return view;
     }

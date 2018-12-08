@@ -2,12 +2,13 @@ package com.example.lenovo.bookfetcher;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,25 +23,46 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
-    Views mViews;
+/**
+ * Created by Lenovo on 12/7/2018.
+ */
+
+public class BookActivity extends AppCompatActivity {
+    MyViews mViews;
     private static final String URL =
-            "http://www.json-generator.com/api/json/get/bVatIxAYPm?indent=2"; // l'api subjects
-
-    private SubjectsAdapter subjectsAdapter;
-    private ArrayList<Subject> subjects;
-
+            "http://www.json-generator.com/api/json/get/cgsVRbrLoy?indent=2"; // l'api subjects
+    private static final String URL_2="http://www.json-generator.com/api/json/get/cjyJOYOXFK?indent=2";
+    private BooksAdapter booksAdapter;
+    private ArrayList<Book> books;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mViews = new Views();
-        subjects=new ArrayList<>();
-        new BookDownloadTask().execute(URL);
+        setContentView(R.layout.book_activity);
+        mViews = new MyViews();
+        books=new ArrayList<>();
+
+
+        String method = super.getIntent().getExtras().getString("method");
+     //   String method_2=super.getIntent().getExtras().getString("method_2");
+
+        if (method.equals("myMethod")) {
+            test();
+            new BookDownloadTask().execute(URL);
+        }
+        if(method.equals("myMethod_2")){
+            new BookDownloadTask().execute(URL_2);
+        }
+        if(method.equals("myMethod_3")){
+            new BookDownloadTask().execute(URL_2);
+        }
 
     }
-    //connexion avec l'api
+
+    public void test() {
+        Toast.makeText(getApplicationContext(), "ok 200", Toast.LENGTH_LONG).show();
+    }
+
     class BookDownloadTask extends AsyncTask<String, Void, String> {
         @Override
         protected void onPreExecute() {
@@ -83,23 +105,23 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
     private void parseJsonResponse(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
-            JSONArray bookArray = jsonObject.getJSONArray("subjects");
+            JSONArray bookArray = jsonObject.getJSONArray("books");
 
             for (int i = 0; i < bookArray.length(); i++) {
                 JSONObject bookObject = bookArray.getJSONObject(i);
-                String description = bookObject.getString("description");
+                String pagenumber = bookObject.getString("pagenumber");
                 String title = bookObject.getString("title");
 
 
-
-                subjects.add(new Subject(description, title));
+                books.add(new Book(pagenumber, title));
             }
 
-            subjectsAdapter = new SubjectsAdapter(MainActivity.this, subjects);
-            mViews.bookList.setAdapter(subjectsAdapter);
+            booksAdapter = new BooksAdapter(BookActivity.this, books);
+            mViews.bookList.setAdapter(booksAdapter);
             mViews.bookList.setVisibility(View.VISIBLE);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -107,41 +129,27 @@ public class MainActivity extends AppCompatActivity {
         mViews.bookList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                switch (i){
-
-
+                switch (i) {
                     case 0:
-                        Intent intent=new Intent(getApplicationContext(),BookActivity.class);
-                        intent.putExtra("method","myMethod");
+                        Intent intent = new Intent(getApplicationContext(), Pdf_viewer.class);
                         startActivity(intent);
                         break;
-
-                    case 1:
-                        Intent intent2=new Intent(getApplicationContext(),BookActivity.class);
-                        intent2.putExtra("method","myMethod_2");
-                        startActivity(intent2);
-                        break;
-                    case 2:
-                        Intent intent3=new Intent(getApplicationContext(),BookActivity.class);
-                        intent3.putExtra("method","myMethod_3");
-                        startActivity(intent3);
                 }
             }
         });
     }
+        class MyViews {
+            final ListView bookList;
+            final ProgressBar progressBar;
 
-    class Views {
-        final ListView bookList;
-        final ProgressBar progressBar;
+
+            public MyViews() {
+                bookList = (ListView) findViewById(R.id.booksLst);
+                progressBar = (ProgressBar) findViewById(R.id.progressBr);
 
 
-        public Views() {
-            bookList = (ListView) findViewById(R.id.booksList);
-            progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
+            }
 
         }
-
     }
-}
+
