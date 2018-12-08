@@ -37,11 +37,11 @@ public class BooksAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
-       // Subject subject= subjects.get(position);
+
         Book book=books.get(i);
         String title = book.title;
         String pagenumber = book.pagenumber;
-        String auteur=book.auteur;
+      //  String auteur=book.auteur;
 
 
         View view = LayoutInflater.from(bookActivity).inflate(R.layout.book_list, null);

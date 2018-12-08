@@ -27,7 +27,7 @@ public class Pdf_viewer extends AppCompatActivity implements OnPageChangeListene
         searchView=findViewById(R.id.search);
 
 
-        //Load Pdf Doc
+        //Load Pdf Doc using com.github.barteksc:android-pdf-viewer:2.8.2 library
         pdfView.fitToWidth();
 
         pdfView.fromAsset("Des exercices donnés en évaluation.pdf")
@@ -41,7 +41,7 @@ public class Pdf_viewer extends AppCompatActivity implements OnPageChangeListene
                 .password(null)
                 .scrollHandle(null)
                 .enableAntialiasing(true) // improve rendering a little bit on low-res screens
-                .spacing(2) // Espace entre pages (dp)
+                .spacing(2) // space btwn pages / Espace entre pages (dp)
                 .load();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

@@ -30,7 +30,7 @@ import java.util.ArrayList;
 public class BookActivity extends AppCompatActivity {
     MyViews mViews;
     private static final String URL =
-            "http://www.json-generator.com/api/json/get/cgsVRbrLoy?indent=2"; // l'api subjects
+            "http://www.json-generator.com/api/json/get/cgsVRbrLoy?indent=2";
     private static final String URL_2="http://www.json-generator.com/api/json/get/cjyJOYOXFK?indent=2";
     private BooksAdapter booksAdapter;
     private ArrayList<Book> books;
@@ -44,7 +44,7 @@ public class BookActivity extends AppCompatActivity {
 
 
         String method = super.getIntent().getExtras().getString("method");
-     //   String method_2=super.getIntent().getExtras().getString("method_2");
+
 
         if (method.equals("myMethod")) {
             test();
@@ -63,7 +63,7 @@ public class BookActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "ok 200", Toast.LENGTH_LONG).show();
     }
 
-    class BookDownloadTask extends AsyncTask<String, Void, String> {
+    class BookDownloadTask extends AsyncTask<String, Void, String> { //Class which establish connexion with the Url
         @Override
         protected void onPreExecute() {
             mViews.progressBar.setVisibility(View.VISIBLE);
@@ -97,7 +97,7 @@ public class BookActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String response) {
+        protected void onPostExecute(String response) { // Once connexion is done, display the response by calling parseJsonResponse method
             mViews.progressBar.setVisibility(View.GONE);
 
             if (response != null) {
@@ -106,7 +106,7 @@ public class BookActivity extends AppCompatActivity {
         }
     }
 
-    private void parseJsonResponse(String response) {
+    private void parseJsonResponse(String response) { // fetch and parse the url response
         try {
             JSONObject jsonObject = new JSONObject(response);
             JSONArray bookArray = jsonObject.getJSONArray("books");
